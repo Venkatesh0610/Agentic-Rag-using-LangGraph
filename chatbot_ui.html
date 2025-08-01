@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Agentic RAG Chatbot using LangGraph</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <style>
+  body {
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #1f1f2e;
+    color: #f1f1f1;
+  }
+  header {
+    background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+    color: white;
+    padding: 30px 20px;
+    text-align: center;
+  }
+  header h1 {
+    margin: 0;
+    font-size: 2.5rem;
+  }
+  .project-description {
+    padding: 20px;
+    text-align: center;
+    font-size: 1.2rem;
+    color: #ddd;
+  }
+  .card {
+    background: #2c2c3d;
+    max-width: 700px;
+    margin: 20px auto;
+    padding: 25px;
+    border-radius: 15px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+  }
+  .card h2 {
+    text-align: center;
+    margin-bottom: 15px;
+    color: #ffffff;
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 10px;
+  }
+  .grid-item {
+    background: #3a3a50;
+    padding: 10px;
+    text-align: center;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    color: #e6e6e6;
+  }
+  .contact {
+    text-align: center;
+    margin: 40px 0;
+  }
+  .contact h3 {
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+    color: #eee;
+  }
+  .contact a {
+    margin: 0 12px;
+    font-size: 32px;
+    transition: transform 0.2s ease;
+  }
+  .contact a:hover {
+    transform: scale(1.2);
+  }
+  .fa-youtube { color: #FF0000; }
+  .fa-medium { color: #ffffff; }
+  .fa-linkedin { color: #0077B5; }
+  .fa-github { color: #ccc; }
+
+  /* Chatbot styling */
+  .chatBot {
+    position: fixed;
+    bottom: 80px;
+    right: 20px;
+    width: 300px;
+    max-height: 400px;
+    display: none;
+    flex-direction: column;
+    background: #2e2e40;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+    overflow: hidden;
+  }
+  .chat-header {
+    background: #374785;
+    color: #fff;
+    padding: 10px;
+    font-weight: bold;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .chatbox {
+    list-style: none;
+    padding: 10px;
+    margin: 0;
+    flex: 1;
+    overflow-y: auto;
+  }
+  .chat {
+    margin-bottom: 10px;
+  }
+  .chat p {
+    background: #44445a;
+    padding: 8px 12px;
+    border-radius: 10px;
+    max-width: 80%;
+  }
+  .chat-incoming p {
+    background: #3b5998;
+    align-self: flex-start;
+    color: white;
+  }
+  .chat-outgoing p {
+    background: #5cb85c;
+    align-self: flex-end;
+    color: white;
+  }
+  .chat-input {
+    display: flex;
+    padding: 10px;
+    border-top: 1px solid #555;
+  }
+  .chat-input textarea {
+    flex: 1;
+    resize: none;
+    border: 1px solid #666;
+    border-radius: 5px;
+    padding: 8px;
+    background: #1f1f2e;
+    color: #eee;
+  }
+  .chat-input button {
+    background: #4a69bd;
+    color: #fff;
+    border: none;
+    margin-left: 8px;
+    border-radius: 5px;
+    padding: 8px 12px;
+    cursor: pointer;
+  }
+  #openChatBtn {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    font-size: 22px;
+    background: #4a69bd;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    cursor: pointer;
+  }
+</style>
+</head>
+<body>
+  <header>
+    <h1><i class="fas fa-brain"></i> Agentic RAG Chatbot using LangGraph</h1>
+  </header>
+
+  <div class="project-description">
+   <p>This project showcases an <strong>Agentic RAG (Retrieval-Augmented Generation)</strong> system built with LangGraph. It combines intelligent agents, document retrieval, and LLM reasoning to answer both general queries and questions based on url or knowledge sources.</p>
+</div>
+
+  <div class="card">
+    <h2>Packages Used</h2>
+    <div class="grid">
+      <div class="grid-item">LangGraph</div>
+      <div class="grid-item">LangChain</div>
+      <div class="grid-item">Groq API</div>
+      <div class="grid-item">FastAPI</div>
+      <div class="grid-item">RAG</div>
+    </div>
+  </div>
+
+  <div class="contact">
+    <h3><i class="fas fa-handshake"></i> Connect with Me</h3>
+    <a href="https://www.youtube.com/@avenkatesh0610" target="_blank" title="YouTube"><i class="fab fa-youtube"></i></a>
+    <a href="https://medium.com/@avenkatesh0610" target="_blank" title="Medium"><i class="fab fa-medium"></i></a>
+    <a href="https://www.linkedin.com/in/venkatesh-a-400459191/" target="_blank" title="LinkedIn"><i class="fab fa-linkedin"></i></a>
+    <a href="https://github.com/Venkatesh0610" target="_blank" title="GitHub"><i class="fab fa-github"></i></a>
+  </div>
+
+  <!-- Chat widget -->
+  <div class="chatBot" id="chatWidget">
+    <div class="chat-header">
+      ChatBot
+      <button onclick="cancel()">&times;</button>
+    </div>
+    <ul class="chatbox" id="chatbox"></ul>
+    <div class="chat-input">
+      <textarea rows="1" placeholder="Type a message..."></textarea>
+      <button>Send</button>
+    </div>
+  </div>
+
+  <button id="openChatBtn" onclick="openChat()">💬</button>
+
+  <script>
+    const chatInput = document.querySelector('.chat-input textarea');
+    const sendChatBtn = document.querySelector('.chat-input button');
+    const chatbox = document.querySelector(".chatbox");
+    const chatWidget = document.getElementById("chatWidget");
+    const openChatBtn = document.getElementById("openChatBtn");
+
+    let userMessage;
+
+    const createChatLi = (message, className) => {
+      const chatLi = document.createElement("li");
+      chatLi.classList.add("chat", className);
+      chatLi.innerHTML = `<p>${message}</p>`;
+      return chatLi;
+    };
+
+    const generateResponse = (incomingChatLi) => {
+      const messageElement = incomingChatLi.querySelector("p");
+
+      fetch("http://localhost:9000/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          message: userMessage,
+          session_id: "portfolio_session"
+        })
+      })
+      .then(res => res.json())
+      .then(data => {
+        messageElement.textContent = data.response;
+      })
+      .catch(() => {
+        messageElement.classList.add("error");
+        messageElement.textContent = "Oops! Something went wrong.";
+      })
+      .finally(() => chatbox.scrollTo(0, chatbox.scrollHeight));
+    };
+
+    const handleChat = () => {
+      userMessage = chatInput.value.trim();
+      if (!userMessage) return;
+
+      chatbox.appendChild(createChatLi(userMessage, "chat-outgoing"));
+      chatbox.scrollTo(0, chatbox.scrollHeight);
+      chatInput.value = "";
+
+      setTimeout(() => {
+        const incomingChatLi = createChatLi("Thinking...", "chat-incoming");
+        chatbox.appendChild(incomingChatLi);
+        chatbox.scrollTo(0, chatbox.scrollHeight);
+        generateResponse(incomingChatLi);
+      }, 600);
+    };
+
+    sendChatBtn.addEventListener("click", handleChat);
+
+    function cancel() {
+      chatWidget.style.display = "none";
+      openChatBtn.style.display = "block";
+    }
+
+    function openChat() {
+      chatWidget.style.display = "flex";
+      openChatBtn.style.display = "none";
+    }
+  </script>
+
+</body>
+</html>
